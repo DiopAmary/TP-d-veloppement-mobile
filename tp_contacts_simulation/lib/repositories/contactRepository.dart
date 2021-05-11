@@ -22,7 +22,7 @@ class ContactRepository {
   Future<List<Contact>> allContacts() async {
     var future = await Future.delayed(Duration(seconds: 1));
     int random = new Random().nextInt(10);
-    if (random > 4) {
+    if (random > 2) {
       return contacts.values.toList();
     } else {
       throw Exception("Internet ERROR");
@@ -32,7 +32,7 @@ class ContactRepository {
   Future<List<Contact>> contactsByType(String type) async {
     var future = await Future.delayed(Duration(seconds: 1));
     int random = new Random().nextInt(10);
-    if (random > 3) {
+    if (random > 2) {
       return contacts.values
           .toList()
           .where((element) => element.type == type)
