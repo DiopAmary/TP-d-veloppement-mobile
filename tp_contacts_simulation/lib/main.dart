@@ -6,6 +6,7 @@ import 'package:tp_contacts_simulation/blocs/messages/messageBloc.dart';
 import 'package:tp_contacts_simulation/blocs/messages/messageState.dart';
 import 'package:tp_contacts_simulation/repositories/contactRepository.dart';
 import 'package:tp_contacts_simulation/repositories/messageRepository.dart';
+import 'package:tp_contacts_simulation/ui/pages/contactMessage/contactMessagePage.dart';
 import 'package:tp_contacts_simulation/ui/pages/contacts/contactPage.dart';
 import 'package:tp_contacts_simulation/ui/pages/messages/messagesPage.dart';
 
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+            create: (context) => MessageBloc(MessageState.initialState(),
+                GetIt.instance<MessageRepository>())),
+        BlocProvider(
           create: (context) => ContactBloc(
               ContactState(
                   conatacts: [],
@@ -31,9 +35,6 @@ class MyApp extends StatelessWidget {
                   errorMessage: ''),
               GetIt.instance<ContactRepository>()),
         ),
-        BlocProvider(
-            create: (context) => MessageBloc(MessageState.initialState(),
-                GetIt.instance<MessageRepository>()))
       ],
       child: MaterialApp(
         title: 'Contact simulation',
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/contacts': (context) => ContactPage(),
           '/messages': (context) => MessagesPage(),
+          '/contacts-messages': (context) => ContactMessagePage(),
         },
         initialRoute: '/contacts',
       ),
