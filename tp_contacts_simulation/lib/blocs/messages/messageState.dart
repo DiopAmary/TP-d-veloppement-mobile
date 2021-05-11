@@ -7,16 +7,19 @@ class MessageState {
   List<Message> messages;
   String messageError;
   MessageEvent currentEvent;
+  List<Message> selectedMessages = [];
 
   MessageState(
       {this.requesteState,
       this.currentEvent,
       this.messageError,
-      this.messages});
+      this.messages,
+      this.selectedMessages});
 
   MessageState.initialState()
       : requesteState = RequesteState.NONE,
         messages = [],
         messageError = '',
-        currentEvent = null;
+        currentEvent = null,
+        selectedMessages = [];
 }

@@ -13,3 +13,11 @@ class MessageByContactEvent extends MessageEvent<Contact> {
 class AddNewMessageEvent extends MessageEvent<Message> {
   AddNewMessageEvent(Message payLoad) : super(payLoad: payLoad);
 }
+
+class SelectMessageEvent extends MessageEvent<Message> {
+  SelectMessageEvent(Message payLoad) : super(payLoad: payLoad);
+}
+
+class DeleteMessageEvent extends MessageEvent {
+  DeleteMessageEvent() : super(payLoad: null);
+}

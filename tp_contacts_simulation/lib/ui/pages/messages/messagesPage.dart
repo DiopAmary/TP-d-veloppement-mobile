@@ -19,6 +19,24 @@ class MessagesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("${contact.name}"),
+        actions: [
+          BlocBuilder<MessageBloc, MessageState>(builder: (context, state) {
+            return CircleAvatar(
+              child: Text("${state.messages.length}"),
+            );
+          }),
+          BlocBuilder<MessageBloc, MessageState>(builder: (context, state) {
+            if (state.selectedMessages.length > 0) {
+              return IconButton(
+                  icon: Icon(Icons.restore_from_trash),
+                  onPressed: () {
+                    context.read<MessageBloc>().add(new DeleteMessageEvent());
+                  });
+            } else {
+              return Container();
+            }
+          })
+        ],
       ),
       body: Column(
         children: [
@@ -57,6 +75,12 @@ class MessagesPage extends StatelessWidget {
               return ListView.separated(
                   controller: scrollController,
                   itemBuilder: (context, index) => ListTile(
+                        selected: state.messages[index].seleted,
+                        selectedTileColor: Color.fromARGB(50, 160, 185, 198),
+                        onLongPress: () {
+                          context.read<MessageBloc>().add(
+                              new SelectMessageEvent(state.messages[index]));
+                        },
                         title: Row(
                           mainAxisAlignment:
                               (state.messages[index].type == "envoyer")
@@ -102,6 +126,7 @@ class MessagesPage extends StatelessWidget {
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   decoration: InputDecoration(
+                      hintText: "Votre message",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20)))),
                 )),
@@ -111,7 +136,8 @@ class MessagesPage extends StatelessWidget {
                       Message message = new Message(
                           type: "envoyer",
                           contactID: this.contact.id,
-                          content: textEditingController.text);
+                          content: textEditingController.text,
+                          seleted: false);
                       context
                           .read<MessageBloc>()
                           .add(new AddNewMessageEvent(message));
@@ -120,10 +146,12 @@ class MessagesPage extends StatelessWidget {
                           type: "recu",
                           contactID: this.contact.id,
                           content: "Response au message suivant : \n" +
-                              textEditingController.text);
+                              textEditingController.text,
+                          seleted: false);
                       context
                           .read<MessageBloc>()
                           .add(new AddNewMessageEvent(response));
+                      textEditingController.text = "";
                     })
               ],
             ),
